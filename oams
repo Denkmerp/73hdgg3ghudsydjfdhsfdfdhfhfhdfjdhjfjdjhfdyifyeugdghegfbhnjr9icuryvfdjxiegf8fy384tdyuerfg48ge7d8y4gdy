@@ -1,0 +1,88 @@
+local Players = game:GetService("Players")
+
+local function createHat(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local head = character:FindFirstChild("Head")
+    if not head then
+        return
+    end
+    
+    local hat = Instance.new("Part")
+    hat.Name = "OrbitingHat"
+    hat.Size = Vector3.new(2, 1, 2)
+    hat.BrickColor = BrickColor.new("Bright blue")
+    hat.Anchored = true
+    hat.CanCollide = false
+    hat.Parent = game.Workspace
+    
+    local hatMesh = Instance.new("SpecialMesh")
+    hatMesh.MeshType = Enum.MeshType.FileMesh
+    hatMesh.Scale = Vector3.new(0.5, 0.5, 0.5)
+    hatMesh.MeshId = "http://www.roblox.com/asset/?id=22678511"
+    hatMesh.Parent = hat
+    
+    local hatWeld = Instance.new("Weld")
+    hatWeld.Part0 = head
+    hatWeld.Part1 = hat
+    hatWeld.C1 = CFrame.new(0, 1, 0)
+    hatWeld.Parent = hat
+    
+    local angle = 0
+    while true do
+        local orbitRadius = 4
+        local orbitSpeed = 0.05
+        angle = angle + orbitSpeed
+        local x = math.sin(angle) * orbitRadius
+        local z = math.cos(angle) * orbitRadius
+        hat.CFrame = CFrame.new(head.Position + Vector3.new(x, 2, z)) * CFrame.Angles(0, angle, 0)
+        wait(0.01)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    createHat(player)
+end)
+
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 100)
+frame.Position = UDim2.new(0.5, -100, 0.5, -50)
+frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+frame.BorderColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 2
+frame.Parent = gui
+
+local kickButton = Instance.new("TextButton")
+kickButton.Size = UDim2.new(0, 80, 0, 30)
+kickButton.Position = UDim2.new(0.1, 0, 0.1, 0)
+kickButton.BackgroundColor3 = Color3.new(1, 0, 0)
+kickButton.BorderColor3 = Color3.new(0, 0, 0)
+kickButton.BorderSizePixel = 2
+kickButton.Font = Enum.Font.SourceSans
+kickButton.Text = "Kick Player"
+kickButton.TextColor3 = Color3.new(1, 1, 1)
+kickButton.TextScaled = true
+kickButton.Parent = frame
+
+kickButton.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer:Kick("You have been kicked by the Admin script")
+end)
+
+-- Create a button to ban the player
+local banButton = Instance.new("TextButton")
+banButton.Size = UDim2.new(0, 80, 0, 30)
+banButton.Position = UDim2.new(0.5, 0, 0.1, 0)
+banButton.BackgroundColor3 = Color3.new(1, 0, 0)
+banButton.BorderColor3 = Color3.new(0, 0, 0)
+banButton.BorderSizePixel = 2
+banButton.Font = Enum.Font.SourceSans
+banButton.Text = "Ban Player"
+banButton.TextColor3 = Color3.new(1, 1, 1)
+banButton.TextScaled = true
+banButton.Parent = frame
+
+banButton.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer:Kick("You have been banned by this op script L")
+end)
