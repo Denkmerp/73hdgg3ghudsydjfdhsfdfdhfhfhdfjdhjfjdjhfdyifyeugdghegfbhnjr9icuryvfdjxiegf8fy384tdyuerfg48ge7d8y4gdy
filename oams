@@ -86,3 +86,11 @@ banButton.Parent = frame
 banButton.MouseButton1Click:Connect(function()
     game.Players.LocalPlayer:Kick("You have been banned by this op script L")
 end)
+
+local message = Instance.new("Message")
+message.Text = "The script ran!"
+message.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+wait(5)
+message:Destroy() 
+
+end
